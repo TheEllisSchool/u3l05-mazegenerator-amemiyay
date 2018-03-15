@@ -96,29 +96,25 @@ public class MazeGenerator extends JFrame {
 				if (!grid[row][col].isWall(Cell.TOP)) {
 					moveTo(row - 1, col, Cell.TOP, Cell.BOTTOM);
 				}
-                
 				break;
+				
 			case KeyEvent.VK_DOWN:
 				//move one cell down if no wall
 				if (!grid[row][col].isWall(Cell.BOTTOM)) {
 					moveTo(row + 1, col, Cell.BOTTOM, Cell.TOP);
 				}
-
-				
 				break;
+				
 			case KeyEvent.VK_LEFT:
 				if (!grid[row][col].isWall(Cell.LEFT)) {
 					moveTo(row, col - 1, Cell.LEFT, Cell.RIGHT);
-				}
-
-				
+				}	
 				break;
+				
 			case KeyEvent.VK_RIGHT:
 				if (!grid[row][col].isWall(Cell.RIGHT)) {
 					moveTo(row, col + 1, Cell.RIGHT, Cell.LEFT);
 				}
-
-
 				break;
 		}
 
@@ -126,9 +122,8 @@ public class MazeGenerator extends JFrame {
 		if (row == endRow && col == endCol){
 			String message = "You won!";
 			JOptionPane.showMessageDialog(null, message);
+			newMaze();
 		}
-
-		
 		
 	}
     
@@ -197,7 +192,6 @@ public class MazeGenerator extends JFrame {
 
 			//if one or more found
 			if (neighbors.size() > 0) {
-				
 				//if more than 1 found add this cell to the list and try again
 				if (neighbors.size() > 1) {
 					tryLaterCells.add(grid[r][c]);
