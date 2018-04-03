@@ -1,38 +1,41 @@
 
 import java.awt.BorderLayout;
-import java.awt.Font;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 public class MazeGenerator extends JFrame {
     
-	private int rows = 20;
-	private int cols = 20;
+	private int rows = 5;
+	private int cols = 5;
 	private Cell [][] grid = new Cell[rows][cols];
 	private JPanel mazePanel = new JPanel();
 	private int row = 0;
 	private int col = 0;
 	private int endRow = rows - 1; //because we start at 0
 	private int endCol = cols - 1;
+	
 
 	public MazeGenerator(){
 		initGUI();
         
-		setTitle("Maze");
+		setTitle("The Office Maze");
 		setResizable(false);
 		pack();
 		setLocationRelativeTo(null);
@@ -44,11 +47,13 @@ public class MazeGenerator extends JFrame {
 	private void initGUI(){
 		//title 
 		JPanel titlePanel = new JPanel(); 
-		titlePanel.setBackground(Color.BLACK);
+		Color mustard = new Color(237, 195, 68);
+		titlePanel.setBackground(mustard);
 		add(titlePanel, BorderLayout.PAGE_START);
-		Font titleFont = new Font("Fish&Chips", Font.BOLD, 32);
-		JLabel titleLabel = new JLabel("Maze");
-		titleLabel.setBackground(Color.BLACK);
+		Font titleFont = new Font("American Typewriter", Font.PLAIN, 36);
+		JLabel titleLabel = new JLabel("schrute farm: beets");
+		
+		titleLabel.setBackground(mustard);
 		titleLabel.setOpaque(true);
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setFont(titleFont);
@@ -57,7 +62,7 @@ public class MazeGenerator extends JFrame {
         
 		//center panel
 		JPanel centerPanel = new JPanel();
-		centerPanel.setBackground(Color.BLACK);
+		centerPanel.setBackground(mustard);
 		add(centerPanel, BorderLayout.CENTER);
         
 		//maze panel
@@ -66,7 +71,7 @@ public class MazeGenerator extends JFrame {
         
 		//button panel
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBackground(Color.BLACK);
+		buttonPanel.setBackground(mustard);
 		add(buttonPanel, BorderLayout.PAGE_END);
 		JButton newMazeButton = new JButton("New Maze");
 		newMazeButton.setFocusable(false);
@@ -76,7 +81,7 @@ public class MazeGenerator extends JFrame {
 		//listeners
 		newMazeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				newMaze();
+				giveUp();
 			} 
 		});
         
@@ -120,13 +125,12 @@ public class MazeGenerator extends JFrame {
 
 		//puzzle solved?
 		if (row == endRow && col == endCol){
-			String message = "You won!";
-			JOptionPane.showMessageDialog(null, message);
+			ImageIcon winner = new ImageIcon("winner.gif");
+			JOptionPane.showMessageDialog(null, "Perfectenschlag", "Message from Dwight", JOptionPane.INFORMATION_MESSAGE, winner);
 			newMaze();
-		}
-		
+		}	
 	}
-    
+
 	private void moveTo(int nextRow, int nextCol, 
 			int firstDirection, int secondDirection){
 		grid[row][col].setCurrent(false);
@@ -160,6 +164,12 @@ public class MazeGenerator extends JFrame {
 		grid[row][col].setCurrent(true);
 		grid[endRow][endCol].setEnd(true);
 		mazePanel.revalidate();
+	}
+	
+	private void giveUp() {
+		ImageIcon loser = new ImageIcon("loser.gif");
+		JOptionPane.showMessageDialog(null,"", "Message from Dwight", JOptionPane.INFORMATION_MESSAGE, loser);
+		newMaze();
 	}
     
 	private void generateMaze(){
@@ -227,12 +237,13 @@ public class MazeGenerator extends JFrame {
 		}
 		return available;
 	}
+
     
     public static void main(String[] args) {
         try {
             String className = UIManager.getCrossPlatformLookAndFeelClassName();
             UIManager.setLookAndFeel(className);
-        } catch ( Exception e) {}
+        } catch (Exception e) {}
         
         EventQueue.invokeLater(new Runnable (){
             @Override
